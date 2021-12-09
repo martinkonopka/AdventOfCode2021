@@ -17,7 +17,7 @@ def sliding_window(iterable, n):
 is_greater = lambda window: window[0] < window[1]
 
 in1, in2 = itertools.tee(
-    map(lambda value: int(value), open("input.txt"))
+    map(int, open("input.txt"))
 )
 
 
