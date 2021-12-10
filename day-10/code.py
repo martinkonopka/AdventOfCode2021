@@ -23,7 +23,6 @@ def pr(acc, char):
         return acc + [char]
 
 print(
-    "Part 1:",
     sum(
         map(
             lambda x: points1[x],
@@ -43,7 +42,6 @@ print(
 )
 
 print(
-    "Part 2:",
     next(
         map(
             lambda scores: scores[int(len(scores)/2)], 
@@ -56,7 +54,10 @@ print(
                             0
                         ),
                         map(
-                            lambda acc: map(lambda c: chars["e"][chars["b"].index(c)], reversed(acc)),
+                            lambda acc: map(
+                                lambda c: chars["e"][chars["b"].index(c)], 
+                                reversed(acc)
+                            ),
                             filter(
                                 lambda acc: not isinstance(acc, str),
                                 map(
