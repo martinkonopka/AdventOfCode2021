@@ -42,37 +42,37 @@ print(
     )
 )
 
-
 print(
     "Part 2:",
-    functools.reduce(
-        lambda _, scores: scores[int(len(scores)/2)], 
-        [
-            sorted(
-                map(
-                    lambda chars: functools.reduce(
-                        lambda score, char: score * 5 + (points2_order.index(char) + 1),
-                        chars,
-                        0
-                    ),
+    next(
+        map(
+            lambda scores: scores[int(len(scores)/2)], 
+            [
+                sorted(
                     map(
-                        lambda acc: map(lambda c: chars["e"][chars["b"].index(c)], reversed(acc)),
-                        filter(
-                            lambda acc: not isinstance(acc, str),
-                            map(
-                                lambda line: functools.reduce(
-                                    pr,
-                                    list(line.strip()),
-                                    []
-                                ),
-                                open("input.txt")
+                        lambda chars: functools.reduce(
+                            lambda score, char: score * 5 + (points2_order.index(char) + 1),
+                            chars,
+                            0
+                        ),
+                        map(
+                            lambda acc: map(lambda c: chars["e"][chars["b"].index(c)], reversed(acc)),
+                            filter(
+                                lambda acc: not isinstance(acc, str),
+                                map(
+                                    lambda line: functools.reduce(
+                                        pr,
+                                        list(line.strip()),
+                                        []
+                                    ),
+                                    open("input.txt")
+                                )
                             )
                         )
                     )
                 )
-            )
-        ],
-        0
+            ]
+        )
     )
 )
 
