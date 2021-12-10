@@ -2,7 +2,7 @@ import collections
 import itertools
 import functools
 
-chars = { "b": list("(<{["), "e": list(")>}]") }
+brackets = ( "(<{[", ")>}]" )
 points1 = { 
     ")": 3,
     "]": 57,
@@ -11,11 +11,11 @@ points1 = {
 }
 points2_order = ")]}>"
 
-def pr(acc, char):
+def check(acc, char):
     if isinstance(acc, str):
         return acc
-    if len(acc) > 0 and acc[-1] in chars["b"] and char in chars["e"]:
-        if chars["b"].index(acc[-1]) == chars["e"].index(char):
+    if len(acc) > 0 and acc[-1] in brackets[0] and char in brackets[1]:
+        if brackets[0].index(acc[-1]) == brackets[1].index(char):
             return acc[:-1]
         else:
             return char
@@ -30,8 +30,8 @@ print(
                 lambda acc: isinstance(acc, str),
                 map(
                     lambda line: functools.reduce(
-                        pr,
-                        list(line),
+                        check,
+                        line.strip(),
                         []
                     ),
                     open("input.txt")
@@ -55,15 +55,15 @@ print(
                         ),
                         map(
                             lambda acc: map(
-                                lambda c: chars["e"][chars["b"].index(c)], 
+                                lambda c: brackets[1][brackets[0].index(c)], 
                                 reversed(acc)
                             ),
                             filter(
                                 lambda acc: not isinstance(acc, str),
                                 map(
                                     lambda line: functools.reduce(
-                                        pr,
-                                        list(line.strip()),
+                                        check,
+                                        line.strip(),
                                         []
                                     ),
                                     open("input.txt")
