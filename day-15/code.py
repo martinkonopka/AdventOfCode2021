@@ -1,6 +1,7 @@
 import itertools
 import functools
 from collections import Counter
+import heapq
 
 plan = functools.reduce(
     lambda acc, node: acc | node,
@@ -54,14 +55,12 @@ get_risk = lambda plan: (
 
 def path(begin, end, risk, is_out_of_bounds, directions):
     paths = {begin: (0, None)}
-    cache = Counter({begin: 0})
 
-    while len(cache) > 0:
-        pos, cost = cache.most_common()[-1]
-        del cache[pos]
+    cache = [ (0, begin.real, begin.imag) ]
 
-        if pos == end:
-            return cost
+    while end not in paths:
+        cost, real, imag = heapq.heappop(cache)
+        pos = complex(real, imag)
 
         start = paths[pos][1]
 
@@ -70,7 +69,7 @@ def path(begin, end, risk, is_out_of_bounds, directions):
             map(
                 lambda next: (next, (risk(next) + cost, pos)), 
                 filter(
-                    lambda p: start is None or p != start,
+                    lambda p: p != start,
                     itertools.filterfalse(
                         is_out_of_bounds,
                         map(
@@ -84,7 +83,11 @@ def path(begin, end, risk, is_out_of_bounds, directions):
         )
 
         paths |= updates
-        cache = Counter(functools.reduce(lambda acc, item: acc | { item[0]: item[1][0] }, updates.items(), cache))
+
+        for i in updates.items():
+            heapq.heappush(cache, (i[1][0], i[0].real, i[0].imag))
+
+    return paths[end][0]
 
 risk = get_risk(plan)
 
